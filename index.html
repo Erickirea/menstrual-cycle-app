@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cycle Bloom</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Cycle Bloom home">
+          <span class="brand-mark" aria-hidden="true">✿</span>
+          <span>cycle<span class="brand-light">bloom</span></span>
+        </a>
+        <button class="settings-link" id="settings-toggle" type="button" aria-expanded="false" aria-controls="settings-panel">
+          <span aria-hidden="true">⚙</span><span class="settings-label">Cycle settings</span>
+        </button>
+      </header>
+
+      <main class="dashboard">
+        <section class="hero-card" aria-labelledby="greeting">
+          <div class="hero-copy">
+            <p class="eyebrow">Your cycle at a glance</p>
+            <h1 id="greeting">Hello, you <span aria-hidden="true">🌷</span></h1>
+            <p class="hero-description">A little more in tune with your body, every day.</p>
+          </div>
+          <div class="phase-badge"><span class="phase-dot"></span><span id="phase-pill">Cycle phase</span></div>
+          <div class="hero-cycle">
+            <div class="cycle-ring" aria-hidden="true"><span id="ring-cycle-day">--</span></div>
+            <div><span class="stat-label">You're on</span><strong id="hero-cycle-day">Cycle day --</strong><span class="hero-next" id="hero-next-period">Set your last period to get started</span></div>
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Cycle predictions">
+          <article class="stat-card">
+            <span class="stat-icon period-icon" aria-hidden="true">✿</span>
+            <span class="stat-label">Next period</span>
+            <strong id="next-period">--</strong>
+            <span class="stat-foot" id="days-remaining">Set up your cycle</span>
+          </article>
+          <article class="stat-card fertile-card">
+            <span class="stat-icon fertile-icon" aria-hidden="true">✧</span>
+            <span class="stat-label">Fertile window</span>
+            <strong id="fertile-window">--</strong>
+            <span class="stat-foot">Estimated dates</span>
+          </article>
+        </section>
+
+        <section class="panel period-log-panel">
+          <div class="panel-header"><div><p class="eyebrow">Keep your predictions in sync</p><h2>Log a period start</h2></div></div>
+          <form id="period-start-form" class="period-start-form">
+            <label for="period-start-date">When did your period start?</label>
+            <div class="period-start-controls">
+              <input type="date" id="period-start-date" required />
+              <button type="submit" class="primary-btn">Save date</button>
+            </div>
+            <p class="privacy-note">Adding actual start dates helps refine your cycle estimates.</p>
+            <p id="period-start-message" class="form-message" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="panel calendar-panel">
+          <div class="panel-header calendar-header">
+            <div><p class="eyebrow">Your month</p><h2>Cycle calendar</h2></div>
+            <div class="month-controls">
+              <button type="button" id="previous-month" class="icon-btn" aria-label="Previous month">‹</button>
+              <h3 id="calendar-month" aria-live="polite"></h3>
+              <button type="button" id="next-month" class="icon-btn" aria-label="Next month">›</button>
+            </div>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+          <div class="calendar-grid" id="calendar-grid" role="group" aria-label="Cycle calendar"></div>
+          <div class="calendar-legend">
+            <span><i class="legend-dot period-dot"></i>Period</span>
+            <span><i class="legend-dot fertile-dot"></i>Fertile window</span>
+            <span><i class="legend-dot predicted-dot"></i>Predicted</span>
+            <span><i class="legend-dot logged-dot"></i>Logged</span>
+          </div>
+          <div id="selected-day-detail" class="selected-day-detail" aria-live="polite">Select a day to see its cycle details.</div>
+        </section>
+
+        <section class="panel chart-panel">
+          <div class="panel-header">
+            <div><p class="eyebrow">A pattern, not a promise</p><h2>Fertility forecast</h2></div>
+            <span class="chart-cycle-label" id="chart-cycle-label">Your cycle</span>
+          </div>
+          <p class="panel-intro">An estimated pattern based on your cycle length. This is not a contraceptive or medical tool.</p>
+          <div class="chart-wrap" id="fertility-chart" role="img" aria-label="Estimated fertility forecast chart"></div>
+          <div class="chart-legend"><span><i class="chart-line-key"></i>Estimated fertility</span><span><i class="chart-window-key"></i>Fertile window</span></div>
+        </section>
+
+        <section class="panel tracker-panel">
+          <div class="panel-header">
+            <div><p class="eyebrow">Check in with yourself</p><h2>Track today</h2></div>
+          </div>
+          <div class="symptom-picker" id="symptom-picker">
+            <button type="button" data-symptom="Cramps">Cramps</button>
+            <button type="button" data-symptom="Mood changes">Mood changes</button>
+            <button type="button" data-symptom="Energy boost">Energy boost</button>
+            <button type="button" data-symptom="Headache">Headache</button>
+            <button type="button" data-symptom="Spotting">Spotting</button>
+            <button type="button" data-symptom="Nausea">Nausea</button>
+          </div>
+          <label class="notes-box"><span>Notes <span class="optional">(optional)</span></span><textarea id="notes" rows="3" placeholder="Anything else you noticed today?"></textarea></label>
+          <button type="button" class="primary-btn" id="log-entry-btn">Save today's check-in <span aria-hidden="true">→</span></button>
+        </section>
+
+        <section class="panel history-panel">
+          <div class="panel-header"><div><p class="eyebrow">Your notes</p><h2>Recent entries</h2></div></div>
+          <ul id="entries-list" class="entries-list"></ul>
+        </section>
+
+        <section class="panel settings-panel" id="settings-panel" hidden>
+          <div class="panel-header"><div><p class="eyebrow">Personalize your predictions</p><h2>Your cycle details</h2></div></div>
+          <form id="cycle-form">
+            <label><span>Last period started</span><input type="date" id="last-period" required /></label>
+            <div class="form-row">
+              <label><span>Cycle length <span class="optional">(days)</span></span><input type="number" id="cycle-length" min="21" max="45" required /></label>
+              <label><span>Period length <span class="optional">(days)</span></span><input type="number" id="period-length" min="2" max="12" required /></label>
+            </div>
+            <button type="submit" class="primary-btn">Save cycle details</button>
+            <p class="privacy-note">Your cycle details are stored only in this browser.</p>
+          </form>
+          <div class="data-tools">
+            <h3>Manage your data</h3>
+            <div class="data-actions">
+              <button type="button" class="secondary-btn" id="export-data">Export my data</button>
+              <button type="button" class="danger-btn" id="clear-data">Delete all data</button>
+            </div>
+            <p class="privacy-note">Export a backup or permanently clear this app's data from this browser.</p>
+            <p id="data-message" class="form-message" aria-live="polite"></p>
+          </div>
+        </section>
+      </main>
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a href="#greeting" class="nav-item active"><span aria-hidden="true">⌂</span><span>Today</span></a>
+        <a href="#calendar-grid" class="nav-item"><span aria-hidden="true">▦</span><span>Calendar</span></a>
+        <a href="#fertility-chart" class="nav-item"><span aria-hidden="true">⌁</span><span>Insights</span></a>
+        <button type="button" class="nav-item" id="mobile-settings"><span aria-hidden="true">⚙</span><span>Cycle</span></button>
+      </nav>
+    </div>
+
+    <dialog id="edit-entry-dialog" class="edit-dialog" aria-labelledby="edit-entry-title">
+      <form id="edit-entry-form">
+        <div class="panel-header"><div><p class="eyebrow">Update your check-in</p><h2 id="edit-entry-title">Edit entry</h2></div></div>
+        <label for="edit-entry-date">Date</label>
+        <input type="date" id="edit-entry-date" required />
+        <fieldset class="edit-symptoms">
+          <legend>Symptoms</legend>
+          <label><input type="checkbox" value="Cramps" /> Cramps</label>
+          <label><input type="checkbox" value="Mood changes" /> Mood changes</label>
+          <label><input type="checkbox" value="Energy boost" /> Energy boost</label>
+          <label><input type="checkbox" value="Headache" /> Headache</label>
+          <label><input type="checkbox" value="Spotting" /> Spotting</label>
+          <label><input type="checkbox" value="Nausea" /> Nausea</label>
+        </fieldset>
+        <label for="edit-entry-note">Notes</label>
+        <textarea id="edit-entry-note" rows="3" placeholder="Anything else you noticed?"></textarea>
+        <div class="dialog-actions">
+          <button type="button" class="secondary-btn" id="cancel-edit-entry">Cancel</button>
+          <button type="submit" class="primary-btn">Save changes</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
